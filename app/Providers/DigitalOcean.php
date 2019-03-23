@@ -35,11 +35,17 @@ final class DigitalOcean implements DnsProviderInterface
         $this->record = $recordsCollection->firstWhere('name', getenv('RECORD'));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getRecord(): DnsRecord
     {
         return new DnsRecord($this->record->name, new IPv4Address($this->record->data));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function updateRecord(IPv4Address $address): bool
     {
         $result = $this->api->updateData(getenv('DOMAIN'), $this->record->id, $address->getString());

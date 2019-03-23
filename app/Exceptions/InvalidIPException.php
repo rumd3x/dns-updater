@@ -6,6 +6,9 @@ namespace DnsUpdater\Exceptions;
  */
 class InvalidIPException extends \Exception
 {
+    /**
+     * @param string $ip
+     */
     public function __construct(string $ip)
     {
         parent::__construct(sprintf("Invalid IP Address: %s", $ip));

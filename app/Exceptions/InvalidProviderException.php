@@ -6,6 +6,9 @@ namespace DnsUpdater\Exceptions;
  */
 class InvalidProviderException extends \Exception
 {
+    /**
+     * @param string $provider
+     */
     public function __construct(string $provider)
     {
         parent::__construct(sprintf("Invalid Provider: %s", $provider));

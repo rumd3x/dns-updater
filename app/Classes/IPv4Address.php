@@ -41,7 +41,14 @@ final class IPv4Address extends BaseObject
         return $this->address;
     }
 
-    public function equals(IPv4Address $otherAddress): bool {
+    /**
+     * Compares two IP Addresses
+     *
+     * @param IPv4Address $otherAddress
+     * @return boolean
+     */
+    public function equals(IPv4Address $otherAddress): bool
+    {
         return $this->address === $otherAddress->getString();
     }
 }

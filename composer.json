@@ -1,0 +1,28 @@
+{
+    "name": "rumd3x/dns-updater",
+    "description": "Updates your DNS records on your DNS provider when it changes.",
+    "type": "project",
+    "require": {
+        "php": ">=7.2",
+        "rumd3x/php-baseobject": "^1.0",
+        "tightenco/collect": "^5.8",
+        "vlucas/phpdotenv": "^3.3",
+        "guzzlehttp/guzzle": "^6.3",
+        "toin0u/digitalocean-v2": "^2.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Edmur Cardoso",
+            "email": "edmurcardoso@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DnsUpdater\\": "app/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    }
+}

@@ -10,7 +10,7 @@ final class DnsUpdater
     /**
      * Providers Map
      */
-    static $providerMap = [
+    public static $providerMap = [
         'cloudflare' => 'DnsUpdater\Providers\CloudFlare',
         'digitalocean' => 'DnsUpdater\Providers\DigitalOcean',
     ];
@@ -49,11 +49,12 @@ final class DnsUpdater
      * @return DnsProviderInterface
      * @throws ExcepInvalidProviderExceptiontion
      */
-    private function getProviderInstance(): DnsProviderInterface {
+    private function getProviderInstance(): DnsProviderInterface
+    {
         $configuredProvider = strtolower(trim(getenv('PROVIDER')));
         if (!in_array($configuredProvider, array_keys(static::$providerMap))) {
             throw new InvalidProviderException($configuredProvider);
         }
-        return new static::$providerMap[$configuredProvider](getenv('KEY'));
+        return new static::$providerMap[$configuredProvider];
     }
 }

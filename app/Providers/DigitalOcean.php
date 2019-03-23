@@ -19,9 +19,9 @@ final class DigitalOcean implements DnsProviderInterface
      */
     private $api;
 
-    public function __construct(string $apiKey)
+    public function __construct()
     {
-        $digitalOceanApi = new DigitalOceanV2(new GuzzleHttpAdapter($apiKey));
+        $digitalOceanApi = new DigitalOceanV2(new GuzzleHttpAdapter(getenv('KEY')));
         $this->api = $digitalOceanApi->domainRecord();
     }
 
@@ -38,5 +38,4 @@ final class DigitalOcean implements DnsProviderInterface
         $result = $this->api->updateData($record->getDomain(), $record->getId(), $record->getAddress()->getString());
         return (empty($result) || $result->data !== $record->getAddress()->getString());
     }
-
 }

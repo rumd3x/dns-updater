@@ -25,9 +25,9 @@ final class DigitalOcean implements DnsProviderInterface
         $this->api = $digitalOceanApi->domainRecord();
     }
 
-    public function getRecord(): DigitalOceanDnsRecord
+    public function getRecord(): DnsRecord
     {
-        $domainRecords = $this->api->getAll(self::DOMAIN);
+        $domainRecords = $this->api->getAll(getenv('DOMAIN'));
         $recordsCollection = collect($domainRecords);
         $record = $recordsCollection->firstWhere('name', getenv('RECORD'));
         return new DigitalOceanDnsRecord($record->id, getenv('DOMAIN'), $record->name, new IPv4Address($record->data));

@@ -28,8 +28,7 @@ final class DnsUpdater
             return;
         }
 
-        $record->setAddress($currentIp);
-        $dnsProvider->updateRecord($record);
+        $dnsProvider->updateRecord($currentIp);
     }
 
     /**

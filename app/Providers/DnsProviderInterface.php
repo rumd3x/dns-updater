@@ -2,9 +2,10 @@
 namespace DnsUpdater\Providers;
 
 use DnsUpdater\Classes\DnsRecord;
+use DnsUpdater\Classes\IPv4Address;
 
 interface DnsProviderInterface
 {
     public function getRecord(): DnsRecord;
-    public function updateRecord(DnsRecord $record): bool;
+    public function updateRecord(IPv4Address $address): bool;
 }

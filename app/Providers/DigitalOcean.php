@@ -5,7 +5,6 @@ use DnsUpdater\Classes\DnsRecord;
 use DigitalOceanV2\DigitalOceanV2;
 use DigitalOceanV2\Adapter\GuzzleHttpAdapter;
 use DnsUpdater\Classes\IPv4Address;
-use DnsUpdater\Classes\DigitalOceanDnsRecord;
 
 /**
  * Digital Ocean DNS Updater
@@ -19,23 +18,31 @@ final class DigitalOcean implements DnsProviderInterface
      */
     private $api;
 
+    /**
+     * The DNS Record
+     *
+     * @var DigitalOceanV2\Entity\DomainRecord
+     */
+    private $record;
+
     public function __construct()
     {
         $digitalOceanApi = new DigitalOceanV2(new GuzzleHttpAdapter(getenv('KEY')));
         $this->api = $digitalOceanApi->domainRecord();
+
+        $domainRecords = $this->api->getAll(getenv('DOMAIN'));
+        $recordsCollection = collect($domainRecords);
+        $this->record = $recordsCollection->firstWhere('name', getenv('RECORD'));
     }
 
     public function getRecord(): DnsRecord
     {
-        $domainRecords = $this->api->getAll(getenv('DOMAIN'));
-        $recordsCollection = collect($domainRecords);
-        $record = $recordsCollection->firstWhere('name', getenv('RECORD'));
-        return new DigitalOceanDnsRecord($record->id, getenv('DOMAIN'), $record->name, new IPv4Address($record->data));
+        return new DnsRecord($this->record->name, new IPv4Address($this->record->data));
     }
 
-    public function updateRecord(DnsRecord $record): bool
+    public function updateRecord(IPv4Address $address): bool
     {
-        $result = $this->api->updateData($record->getDomain(), $record->getId(), $record->getAddress()->getString());
-        return (empty($result) || $result->data !== $record->getAddress()->getString());
+        $result = $this->api->updateData(getenv('DOMAIN'), $this->record->id, $address->getString());
+        return (empty($result) || $result->data !== $this->record->getString());
     }
 }

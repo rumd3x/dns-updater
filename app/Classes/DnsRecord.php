@@ -20,35 +20,16 @@ class DnsRecord extends BaseObject
      */
     private $name;
 
-     /**
-     * Domain of the DNS Record
-     *
-     * @var string
-     */
-    private $domain;
-
     /**
      * Creates a new DNS Record Object
      *
-     * @param string $domain
      * @param string $name
      * @param IPv4Address $address
      */
-    public function __construct(string $domain, string $name, IPv4Address $address)
+    public function __construct(string $name, IPv4Address $address)
     {
         $this->name = trim($name);
-        $this->domain = trim($domain);
         $this->address = $address;
-    }
-
-    /**
-     * Retrieve the DNS Record Domain
-     *
-     * @return string
-     */
-    public function getDomain(): string
-    {
-        return $this->domain;
     }
 
     /**
@@ -69,16 +50,5 @@ class DnsRecord extends BaseObject
     public function getAddress(): IPv4Address
     {
         return $this->address;
-    }
-
-    /**
-     * Changes the DNS Record address
-     *
-     * @param IPv4Address $address
-     * @return self
-     */
-    public function setAddress(IPv4Address $address): self {
-        $this->address = $address;
-        return $this;
     }
 }

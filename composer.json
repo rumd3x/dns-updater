@@ -9,7 +9,8 @@
         "vlucas/phpdotenv": "^2",
         "guzzlehttp/guzzle": "^6.3",
         "toin0u/digitalocean-v2": "^2.3",
-        "cloudflare/sdk": "^1.1"
+        "cloudflare/sdk": "^1.1",
+        "monolog/monolog": "^1.24"
     },
     "license": "MIT",
     "authors": [

@@ -25,13 +25,13 @@ final class DnsUpdater
         $logger = new Logger("DNS-Updater");
         $logger->pushHandler(new ErrorLogHandler());
 
-        $logger->info("Getting current IP...");
-        $currentIp = $this->getCurrentIp();
-        $logger->info(sprintf("Current IP: %s", $currentIp));
-
         $logger->info(sprintf("Trying connect to \"%s\"...", getenv('PROVIDER')));
         $dnsProvider = $this->getProviderInstance();
-        $logger->info(sprintf("Connected successfully using implementation: ", get_class($dnsProvider)));
+        $logger->info(sprintf("Connected successfully using implementation at \"%s\"", get_class($dnsProvider)));
+
+        $logger->info("Getting current IP...");
+        $currentIp = $this->getCurrentIp();
+        $logger->info(sprintf("Current IP: %s", $currentIp->getString()));
 
         $logger->info("Getting DNS Record from provider...");
         $record = $dnsProvider->getRecord();
@@ -42,7 +42,7 @@ final class DnsUpdater
             return;
         }
 
-        $logger->info(sprintf("Trying to update Record on Provider: %s -> %s", $record->getAddress()->getString(), $currentIp));
+        $logger->info(sprintf("Trying to update Record on Provider: %s -> %s", $record->getAddress()->getString(), $currentIp->getString()));
         $success = $dnsProvider->updateRecord($currentIp);
 
         if (!$success) {

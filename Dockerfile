@@ -1,17 +1,19 @@
-FROM php:7-cli
+FROM php:7-cli-alpine
 LABEL maintainer="edmurcardoso@gmail.com"
 
-RUN apt-get update
-RUN apt-get install --no-install-recommends --assume-yes --fix-missing unzip libicu-dev cron git wget
+RUN apk update
+RUN apk add --update --no-cache make icu-dev unzip git wget
 RUN docker-php-ext-install intl
 
 COPY . /usr/src
 
+RUN mkdir /var/log/cron
+RUN touch /var/log/cron/cron.log
+COPY app.cron /crontab
+RUN /usr/bin/crontab -u root /crontab
+
 WORKDIR /usr/src
 RUN wget https://getcomposer.org/composer.phar
 RUN make install
-RUN (crontab -l ; echo "* * * * * /usr/local/bin/php /usr/src/app/bootstrap.php >> /usr/src/app.log 2>&1") | crontab
-RUN service cron restart
-RUN service cron reload
 
-ENTRYPOINT make entrypoint
+ENTRYPOINT make env && crond -f -l 8 & tail -f /var/log/cron/cron.log

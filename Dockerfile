@@ -10,8 +10,8 @@ COPY . /usr/src
 WORKDIR /usr/src
 RUN wget https://getcomposer.org/composer.phar
 RUN make install
-RUN (crontab -l ; echo "* * * * * /usr/local/bin/php /usr/src/app/bootstrap.php >> /proc/1/fd/1") | crontab
+RUN (crontab -l ; echo "* * * * * /usr/local/bin/php /usr/src/app/bootstrap.php >> /usr/src/app.log 2>&1") | crontab
 RUN service cron restart
 RUN service cron reload
 
-ENTRYPOINT make environment && cron -L 7 -f
+ENTRYPOINT make entrypoint

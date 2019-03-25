@@ -5,7 +5,7 @@ use DnsUpdater\Classes\IPv4Address;
 use DnsUpdater\Providers\DnsProviderInterface;
 use DnsUpdater\Exceptions\InvalidProviderException;
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\ErrorLogHandler;
 
 final class DnsUpdater
 {
@@ -23,7 +23,7 @@ final class DnsUpdater
     public function updateDnsRecord()
     {
         $logger = new Logger("DNS-Updater");
-        $logger->pushHandler(new StreamHandler('app.log', Logger::INFO));
+        $logger->pushHandler(new ErrorLogHandler());
 
         $logger->info(sprintf("Trying connect to \"%s\"...", getenv('PROVIDER')));
         $dnsProvider = $this->getProviderInstance();
